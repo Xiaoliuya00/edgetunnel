@@ -1,87 +1,87 @@
-// <!--GAMFC-->version base on commit 43fad05dcdae3b723c53c226f8181fc5bd47223e, time is 2023-06-22 15:20:05 UTC<!--GAMFC-END-->.
-// @ts-ignore
-import { connect } from 'cloudflare:sockets';
+//<！--GAMFC-->基于提交43fad05dcdae3b723c53c226f8181fc5bd47223e的版本，时间为2023-06-2215:20:05UTC<！--GAMFC-END-->。
+//@ts- 忽略
+进口 { 连接 } 从……起 'cloudflare：套接字';
 
-// How to generate your own UUID:
-// [Windows] Press "Win + R", input cmd and run:  Powershell -NoExit -Command "[guid]::NewGuid()"
-let userID = '90cd4a77-141a-43c9-991b-08263cfe9c10';
+//如何生成自己的UUID：
+//[Windows]按"Win+R"，输入cmd并运行：Powershell-NoExit-Command"[guid]：：NewGuid()"
+让 userid='92a88f18-cfc6-4842-9307-7e20baf139f8';
 
-let proxyIP = '';// 小白勿动，该地址并不影响你的网速，这是给CF代理使用的。'cdn.xn--b6gac.eu.org, cdn-all.xn--b6gac.eu.org'
+让 ProxyIP='';//小白勿动，该地址并不影响你的网速，这是给CF代理使用的。'cdn.xn--b6gac.eu.org，cdn-all.xn--b6gac.eu.org'
 
-let sub = '';// 避免项目被滥用，现已取消内置订阅器
-let subconverter = 'SUBAPI.fxxk.dedyn.io';// clash订阅转换后端，目前使用CM的订阅转换功能。自带虚假uuid和host订阅。
-let subconfig = "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/config/ACL4SSR_Online_Mini_MultiMode.ini"; //订阅配置文件
-let subProtocol = 'https';
-// The user name and password do not contain special characters
-// Setting the address will ignore proxyIP
-// Example:  user:pass@host:port  or  host:port
-let socks5Address = '';
+让 潜水艇='';// 避免项目被滥用，现已取消内置订阅器
+让 子转换器='SUBAPI.fxxk.dedyn.io';//chall订阅转换后端，目前使用CM的订阅转换功能.自带虚假uid和host订阅.
+让 子配置="https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/config/ACL4SSR_Online_Mini_MultiMode.ini";//订阅配置文件
+让 子协议='https';
+//用户名和密码不包含特殊字符
+//设置地址将忽略ProxyIP
+//示例：user:pass@host:port或host:port
+让 socks5Address='';
 
-if (!isValidUUID(userID)) {
-	throw new Error('uuid is not valid');
+如果 (!isValidUUID(userid)) {
+	扔 新的误差('uid无效');
 }
 
-let parsedSocks5Address = {}; 
-let enableSocks = false;
+让 parsedSocks5Address={};
+让 enableSocks=假的;
 
-// 虚假uuid和hostname，用于发送给配置生成服务
-let fakeUserID ;
-let fakeHostName ;
-let noTLS = 'false'; 
-const expire = 4102329600;//2099-12-31
-let proxyIPs;
-let socks5s;
-let go2Socks5s = [
+//虚假uid和hostname，用于发送给配置生成服务
+让 fakeUserID;
+让 fakeHostName;
+让 noTLS='false';
+Const 到期=4102329600;//2099-12-31
+让 proxyIPs;
+让 socks5s;
+让 go2Socks5s=[
 	'*ttvnw.net',
 ];
-let addresses = [
-	//当sub为空时启用本地优选域名/优选IP，若不带端口号 TLS默认端口为443，#号后为备注别名
+让 地址=[
+	//当sub为空时启用本地优选域名/优选IP，若不带端口号TLS默认端口为443，#号后为备注别名
 	/*
-	'Join.my.Telegram.channel.CMLiussss.to.unlock.more.premium.nodes.cf.090227.xyz#加入我的频道t.me/CMLiussss解锁更多优选节点',
-	'visa.cn:443',
-	'www.visa.com:8443',
-	'cis.visa.com:2053',
-	'africa.visa.com:2083',
-	'www.visa.com.sg:2087',
-	'www.visaeurope.at:2096',
-	'www.visa.com.mt:8443',
-	'qa.visamiddleeast.com',
-	'time.is',
-	'www.wto.org:8443',
-	'chatgpt.com:2087',
-	'icook.hk',
-	'104.17.0.0#IPv4',
-	'[2606:4700::]#IPv6'
-	*/
+加入。我的。电报。渠道。CMLiusss。到。解锁。更多。保险费。节点.cf.090227.XYZ#加入我的频道t.me/CMLiussss解锁更多优选节点'，
+'visa.cn:443'，
+'www.visa.com:8443'，
+'cis.visa.com:2053'，
+'africa.visa.com:2083'，
+'www.visa.com.sg:2087'，
+'www.visaeaurope.at:2096'，
+'www.visa.com.mt:8443'，
+'qa.visamiddleast.com'，
+'time.is'，
+'www.wto.org:8443'，
+'chatgpt.com:2087'，
+'Cook.hk'，
+'104.17.0.0#IPv4',
+'[2606:4700::]#IPv6'
+*/
 ];
-let addressesapi = [];
-let addressesnotls = [
-	//当sub为空且域名带有"worker"字样时启用本地优选域名/优选IP，若不带端口号 noTLS默认端口为80，#号后为备注别名
+让 addressapi=[];
+让 addressnotls=[
+	//当sub为空且域名带有"工人"字样时启用本地优选域名/优选IP，若不带端口号noTLS默认端口为80，#号后为备注别名
 	/*
-	'usa.visa.com',
-	'myanmar.visa.com:8080',
-	'www.visa.com.tw:8880',
-	'www.visaeurope.ch:2052',
-	'www.visa.com.br:2082',
-	'www.visasoutheasteurope.com:2086',
-	'[2606:4700::1]:2095#IPv6'
-	*/
+'usa.visa.com'，
+'Myanmar.visa.com:8080'，
+'www.visa.com.tw:8880'，
+'www.visaeurope.ch:2052'，
+'www.visa.com.br:2082'，
+'www.visasoutheasteurope.com:2086'，
+'[2606:4700::1]:2095#IPv6'
+*/
 ];
-let addressesnotlsapi = [];
-let addressescsv = [];
-let DLS = 8;
-let FileName = 'edgetunnel';
-let BotToken ='';
-let ChatID =''; 
-let proxyhosts = [];//本地代理域名池
-let proxyhostsURL = 'https://raw.githubusercontent.com/cmliu/CFcdnVmess2sub/main/proxyhosts';//在线代理域名池URL
-let RproxyIP = 'false';
-let httpsPorts = ["2053","2083","2087","2096","8443"];
-export default {
+让 addressnotlsapi=[];
+让 addresscsv=[];
+让 DLS=8;
+让 文件名='边隧道';
+让 BotToken='';
+让 chatid='';
+让 代理主机=[];//本地代理域名池
+让 proxyhostsURL='https://raw.githubusercontent.com/cmliu/CFcdnVmess2sub/main/proxyhosts';//在线代理域名池URL
+让 RproxyIP='false';
+让 httpsPorts=["2053","2083","2087","2096","8443"];
+出口 默认 {
 	/**
-	 * @param {import("@cloudflare/workers-types").Request} request
-	 * @param {{UUID: string, PROXYIP: string}} env
-	 * @param {import("@cloudflare/workers-types").ExecutionContext} ctx
+*@param{import("@cloudflare/workers-types").Request}请求
+*@param{{UUID:string，ProxyIP:string}}env
+*@param{import("@cloudflare/workers-types").ExecutionContext}CTX
 	 * @returns {Promise<Response>}
 	 */
 	async fetch(request, env, ctx) {
