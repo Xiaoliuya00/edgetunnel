@@ -4,7 +4,7 @@
 
 //如何生成自己的UUID：
 //[Windows]按"Win+R"，输入cmd并运行：Powershell-NoExit-Command"[guid]：：NewGuid()"
-让userid='6382a5b5-26a1-45c7-8e3d-4a2ea08dbc06';
+让userid='90cd4a77-141a-43c9-991b-08263cfe9c10';
 
 让ProxyIP='';//小白勿动，该地址并不影响你的网速，这是给CF代理使用的。'CDN.xn--b6gac。欧盟。org，cdn-all.xn--b6gac.欧盟。组织‘
 
